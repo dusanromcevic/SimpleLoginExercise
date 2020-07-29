@@ -12,6 +12,7 @@ namespace PilotProject
     {
 
         // pravljenje instance drajvera ispod sam nasao kao jedno od mogucih resenja sa stackowerflowa
+        // ovo je dobro za pocetak ali ako imas 10 Page Objects vidi da ne instanciras drajver svaki put nego ga izvuci u posebnu klasu koju bi nasledjivao mozda preko BasePage
         private IWebDriver driver;
 
         public SignInPage(IWebDriver _driver)
@@ -20,12 +21,16 @@ namespace PilotProject
         }
 
         // lista elemenata sa drajverom uzetim iz driver klase koju sam video kao predlog da se pravi posebno kao odvojena klasa
-        public IWebElement Authentication = Driver.driver.FindElement(By.Id("content"));
-        public IWebElement Username => Driver.driver.FindElement(By.Id("username"));
+        // oive elemente vidis na ovoj i na svim drugim stranicama. Mislim da je to lose. Ti ovim elementima pristupas samo preko SignInPage. I to cak ne radis sa elementima u testu nego metodama. 
+        // Vidi kako bi ih sakrio.
+        public IWebElement Authentication => Driver.driver.FindElement(By.Id("content"));
+        public IWebElement UsernameField => Driver.driver.FindElement(By.Id("username"));
         public IWebElement Password => driver.FindElement(By.Id("password"));
         public IWebElement Login => driver.FindElement(By.CssSelector("input[name='SubmitCreate']"));
 
         // ispd se nalaze parametri koji bi kao moguci test scenariji bili ubacivani u polja
+        // Ovi kredencijali i sl. su deo testa a ne PageObject. I kao takvi bi trebalo da idu u test.
+        // ja bih recimo napravio akcije a ne samo stringove. Npr InputValidCredentials(string username, string password) i onda uradio { UsernameField.SendKyes(username); ...};
         public static class ValidCredentials
         {
             public static string Username = "tomsmith";
